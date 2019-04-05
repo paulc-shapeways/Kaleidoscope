@@ -53,6 +53,7 @@ namespace kaleidoscope {
 /** Kaleidoscope Hardware base class.
  * Essential methods all hardware libraries must implement.
  */
+template <typename Device_>
 class Hardware {
  public:
   /**
@@ -311,5 +312,38 @@ class Hardware {
   void enableHardwareTestMode() {}
 
   /** @} */
+
+  struct {
+    template<typename T>
+    T& get(uint16_t offset, T& t) {
+      return device().storage.get(offset, t);
+    }
+
+    template<typename T>
+    const T& put(uint16_t offset, T& t) {
+      return device().storage.put(offset, t);
+    }
+
+    uint8_t read(int idx) {
+      return device().storage.read(idx);
+    }
+
+    void write(int idx, uint8_t val) {
+      return device().storage.write(idx, val);
+    }
+
+    void update(int idx, uint8_t val) {
+      return device().storage.update(idx, val);
+    }
+
+    uint16_t length() {
+      return device().storage.length();
+    }
+  } storage_;
+
+ protected:
+  Device_ &device() {
+    return static_cast<Device_ &>(*this);
+  }
 };
 }
