@@ -86,10 +86,13 @@ class Model01 : public kaleidoscope::Hardware<Model01> {
   keydata_t previousLeftHandState;
   keydata_t previousRightHandState;
 
-  kaleidoscope::driver::storage::AVREEPROM storage;
+  kaleidoscope::driver::storage::AVREEPROM &storage() {
+    return storage_;
+  }
 
  protected:
   kaleidoscope::driver::mcu::ATMega32U4 mcu_;
+  kaleidoscope::driver::storage::AVREEPROM storage_;
 
  private:
   static void actOnHalfRow(byte row, byte colState, byte colPrevState, byte startPos);
